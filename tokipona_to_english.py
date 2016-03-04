@@ -1,3 +1,5 @@
+# Will be merged and migrated to a module shortly
+
 # the toki pona dictionary as simple as I could make it!
 tpdictionary = {
 'a': 'ah!',

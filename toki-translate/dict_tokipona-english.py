@@ -1,0 +1,1 @@
+# Tokipona Dictionary 
