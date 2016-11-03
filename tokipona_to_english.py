@@ -1,5 +1,9 @@
+<<<<<<< HEAD
 # Run with Python 3
 # py -3
+=======
+# Will be merged and migrated to a module shortly
+>>>>>>> 48ba035aae5ea3e996ea8c0002fe7fbd80e4ea3b
 
 # the toki pona dictionary as simple as I could make it!
 
