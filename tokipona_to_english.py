@@ -1,9 +1,13 @@
+# Run with Python 3
+# py -3
+
 # the toki pona dictionary as simple as I could make it!
+
 tpdictionary = {
 'a': 'ah!',
 'akesi': 'reptile',
 'ala': 'none',
-'alasa': 'hunt or gather',
+'alasa': 'gather',
 'ale': 'all',
 'anpa': 'under',
 'ante': 'different',
@@ -127,8 +131,73 @@ tpdictionary = {
 'wile': 'want',
 }
 
-# functions
+# rules according to pu
+# word + word
+# word + li + word
 
+# lowercase
+# remove non-toki pona charachters unless after jan or nimi
+# remove duplicate li's
+# remove beginning li's
+
+# functions
+def tpSentenceVerifier(tpSentences):
+    #stringToVerify = tpSentences
+    tpStringsToVerify = tpSentences.split('.')
+    tokipona = []
+    for sentence in tpStringsToVerify:
+        tpListToVerify = sentence.split(' ')
+        tpListToVerify = propercases(tpListToVerify)
+        tpListToVerify = tpCheckIsWord(tpListToVerify)
+        tpListToVerify = elaliRemoveDuplicate(tpListToVerify)
+        tokipona.append(' '.join(tpListToVerify))
+        tokipona.append('.')
+    tokipona = ' '.join(tokipona)
+    return tokipona
+
+def propercases(tpListToVerify):
+    checkList = tpListToVerify[:]
+    for index,word in enumerate(tpListToVerify):
+        tpListToVerify[index] = word.lower()
+        if tpListToVerify[index - 1] == 'jan' or tpListToVerify[index - 1] == 'nimi':
+            tpListToVerify[index] = word.capitalize()
+    if checkList != tpListToVerify:
+        propercases(tpListToVerify)
+    return tpListToVerify
+
+def tpCheckIsWord(tpListToVerify):
+    checkList = tpListToVerify[:]
+    for index,word in enumerate(tpListToVerify):
+        if tpdictionary.get(word) == None and tpListToVerify[index - 1] == 'jan' or tpListToVerify[index - 1] == 'nimi':
+           continue
+        elif tpdictionary.get(word) == None:
+            del tpListToVerify[index]
+        else:
+            continue
+    if checkList != tpListToVerify:
+        tpCheckIsWord(tpListToVerify)
+    #print(' '.join(tpListToVerify))           
+    return tpListToVerify
+    
+def elaliRemoveDuplicate(tpListToVerify):
+    checkList = tpListToVerify[:]
+    for tpword in ['li','la','e']:
+        for index, word in enumerate(tpListToVerify):
+            #print(index,len(tpListToVerify))
+            if word == tpword and index == 0:
+                del tpListToVerify[index]
+            elif word == tpword and index < len(tpListToVerify)-1:
+                if tpListToVerify[index + 1] == tpword:
+                    del tpListToVerify[index + 1]
+            elif word == tpword and index+1 == len(tpListToVerify):
+                del tpListToVerify[index]
+        #print(' '.join(tpListToVerify))
+    if checkList != tpListToVerify:
+        elaliRemoveDuplicate(tpListToVerify)
+    return tpListToVerify
+
+
+    
 def OneWordTranslate():
     tpword = input("\n sona ala ni anu seme? ")
     englishword = tpdictionary.get(tpword,"*nothing in toki pona!*")
@@ -141,10 +210,10 @@ def OneWordTranslate():
 
 def SentanceTranslate():
     tpsentenceList = str(input("\n sona ala ni anu seme? "))
-    tpsentence = tpsentenceList.split()
+    tpSentence = tpsentenceList.split()
     englishsentece = []
-    for x in tpsentence:
-        tpword = tpdictionary.get(x,"nothing in toki pona!")
+    for word in tpSentence:
+        tpword = tpdictionary.get(word,"nothing in toki pona!")
         englishsentece.append(tpword)
     print("\n", ' '.join(englishsentece))
     again = input("\n translate another, \'y\' or \'n\'? ")
@@ -163,9 +232,15 @@ def choice():
         print("seme?")
         choice()
  
- # translate toki pona to english!
+
+# translate toki pona to english!
+
+tpInput = input("What is your toki pona? ")
+tp = tpSentenceVerifier(tpInput)
+tp = tpSentenceVerifier("mi jo sowli nimi Skylab. soweli nimi Skylab li li pona e")
+print(tp)
  
-choice()
+#choice()
 
 #print("\n")
 #for tpword, englishword in tpdictionary():
